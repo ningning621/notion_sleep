@@ -2,8 +2,8 @@ function drawRadialChart(svgClass, data) {
   let svg = d3.select(svgClass);
   let tooltip = addTooltipToVis(svgClass);
 
-  let svgWidth = 700;
-  let svgHeight = 700;
+  let svgWidth = 500;
+  let svgHeight = 500;
   let arcMin = 50;
   let arcWidth = 4;
   let centerWidth = svgWidth*0.5;
