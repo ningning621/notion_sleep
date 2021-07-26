@@ -13,7 +13,6 @@ function drawRadialChart(svgClass, data) {
   let currentDate = 0;
   let dateToRingArr = [31, 28, 31, 30, 31, 30, 31, 25];
   let totalDays = dateToRingArr[data[0].Month-1]+1;
-  console.log(totalDays)
   // let totalDays = 31 + 28 + 31 + 10;
 
   let textColor = "#696969";
@@ -98,7 +97,7 @@ function drawRadialChart(svgClass, data) {
   svg.append('g')
     .call(d3.axisRadialOuter(
       axisScale, 
-      arcMin + (ringCounter+5)*arcWidth)
+      arcMin + (totalDays+5)*arcWidth)
     .tickFormat(function(d) {
       if (d == "24") return "";
       return d + ":00";

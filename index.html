@@ -21,8 +21,10 @@
     const getDataAndDrawVis = async() => {
       let data = await d3.csv("sleep.csv");
 
+      console.log(data)
       // TODO change to current month
-      let filterData = data.filter(d => d.Month == 1);
+      let today = new Date();
+      let filterData = data.filter(d => (d.Month == (today.getMonth()+1)));
 
       drawRadialChart(".mainVis", filterData);
     }
