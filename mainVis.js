@@ -12,7 +12,7 @@ function drawRadialChart(svgClass, data) {
   let ringCounter = 0;
   let currentDate = 0;
   let dateToRingArr = [31, 28, 31, 30, 31, 30, 31, 25];
-  let totalDays = dateToRingArr[data[0].Month-1];
+  let totalDays = dateToRingArr[data[0].Month-1]+1;
   console.log(totalDays)
   // let totalDays = 31 + 28 + 31 + 10;
 
