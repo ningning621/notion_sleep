@@ -5,14 +5,15 @@ function drawRadialChart(svgClass, data) {
   let svgWidth = 700;
   let svgHeight = 700;
   let arcMin = 50;
-  let arcWidth = 2;
+  let arcWidth = 4;
   let centerWidth = svgWidth*0.5;
   let centerHeight = svgHeight*0.5;
 
   let ringCounter = 0;
   let currentDate = 0;
   let dateToRingArr = [31, 28, 31, 30, 31, 30, 31, 25];
-  let totalDays = data.length;
+  let totalDays = dateToRingArr[data[0].Month-1];
+  console.log(totalDays)
   // let totalDays = 31 + 28 + 31 + 10;
 
   let textColor = "#696969";
@@ -57,23 +58,13 @@ function drawRadialChart(svgClass, data) {
   svg.append('path')
     .attr('d', d3.arc()
       .innerRadius(arcMin)
-      .outerRadius(arcMin + (totalDays)*arcWidth) // hardcoded
+      .outerRadius(arcMin + (totalDays)*arcWidth)
       .startAngle(0)
       .endAngle(360 * PI / 180)
     )
     .attr('fill', backgroundColor)
     .attr('transform', "translate(" + centerWidth + ", " + centerHeight + ")")
     .style('opacity', 0.75);
-
-  // draw all nighters arcs
-  svg.selectAll('.allNighterArcs')
-    .data(getAllNighters())
-    .enter()
-    .append("path")
-    .attr('d', allNighterArc)
-    .attr('fill', allNighterColor)
-    .attr('transform', "translate(" + centerWidth + ", " + centerHeight + ")")
-    .style('opacity', 0.65);
 
   // draw sleep arcs
   svg.selectAll('.allSleepArcs')
@@ -97,12 +88,12 @@ function drawRadialChart(svgClass, data) {
     .domain([0, 24])
     .range([0, 2*Math.PI]);
 
-  svg.append("text")
-    .attr("x", centerWidth)
-    .attr("y", 85)
-    .text("24 hr time →")
-    .style("font-family", "Rubik")
-    .style("font-size", "12");
+  // svg.append("text")
+  //   .attr("x", centerWidth)
+  //   .attr("y", 85)
+  //   .text("24 hr time →")
+  //   .style("font-family", "Rubik")
+  //   .style("font-size", "12");
 
   svg.append('g')
     .call(d3.axisRadialOuter(
@@ -121,75 +112,4 @@ function drawRadialChart(svgClass, data) {
         if (axisScale(d) < Math.PI) return "start";
         else return "end";
       });
-
-  // add title
-  addTitleText(svg, 25, 100, darkGreyColor, ["Sleep Patterns from", "Jan 2021 - April 2021"]);
-  addBodyText(svg, 25, 200, textColor, 
-    [
-      "I have been recording my sleep schedule",
-      "every day in a bullet journal and visualizing",
-      "that data leads to some interesting patterns."
-    ]);
-
-  addBodyText(svg, 25, 300, textColor, 
-    [
-      "Although I sleep at strange times,",
-      "I do get on average 6.84 hours of sleep",
-      "per day."
-    ]);
-
-  // add legend
-  svg.append('path')
-    .attr('d', d3.arc()
-      .innerRadius(15)
-      .outerRadius(15 + (20)*arcWidth) // hardcoded
-      .startAngle(0)
-      .endAngle(360 * PI / 180)
-    )
-    .attr('fill', backgroundColor)
-    .attr('transform', "translate(" + 100 + ", " + 550 + ")")
-    .style('opacity', 0.75);
-
-  let allNighterLegendArc = d3.arc()
-    .startAngle(0)
-    .endAngle((360 * PI / 180))
-    .innerRadius(function(d) {
-      return 15 + d*arcWidth;
-    })
-    .outerRadius(function(d) {
-      return 15 + (d+1)*arcWidth;
-    });
-
-  let sleepLegendArc = d3.arc()
-    .startAngle(function(d) {
-      var str = d["Hours"].split("-");
-      return (convertTimeStrToFrac(str[0])/24 * 360 * PI / 180);
-    })
-    .endAngle(function(d) {
-      var str = d["Hours"].split("-");
-      return (convertTimeStrToFrac(str[1])/24 * 360 * PI / 180);
-    })
-    .innerRadius(function(d) {
-      return 15 + d["Counter"]*arcWidth;
-    })
-    .outerRadius(function(d) {
-      return 15 + (d["Counter"]+1)*arcWidth;
-    });
-
-  svg.selectAll('.allNighterLegendArcs')
-    .data([2, 5, 12])
-    .enter()
-    .append("path")
-    .attr('d', allNighterLegendArc)
-    .attr('fill', allNighterColor)
-    .attr('transform', "translate(" + 100 + ", " + 550 + ")")
-    .style('opacity', 0.65);
-
-  svg.selectAll('.allSleepLegendArcs')
-    .data(getLegendSleepArcs())
-    .enter()
-    .append('path')
-    .attr('d', sleepLegendArc)
-    .attr('transform', "translate(" + 100 + ", " + 550 + ")") 
-    .attr('fill', blueArcColor)
 }
