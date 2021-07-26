@@ -1,0 +1,33 @@
+<html>
+
+<head>
+    <title>Notion Sleep Widget</title>
+    <meta charset="utf-8" />
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script type="text/javascript" src="helper.js"></script>
+    <script type="text/javascript" src="mainVis.js"></script>
+    <script src="//unpkg.com/d3-radial-axis"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Proza+Libre&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>⭕</text></svg>">
+</head>
+
+<body style="text-align: center; background-color: #ffffff; ">
+  <svg height="700" width="700" class="mainVis"></svg>
+  <script>
+    let PI = Math.PI;
+
+    const getDataAndDrawVis = async() => {
+      let data = await d3.csv("sleep.csv");
+
+      // TODO change to current month
+      let filterData = data.filter(d => d.Month == 1);
+
+      drawRadialChart(".mainVis", filterData);
+    }
+
+    getDataAndDrawVis();
+  </script>
+</body>
+</html>
